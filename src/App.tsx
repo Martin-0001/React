@@ -3,10 +3,16 @@ import axios from "axios";
 import "./App.css";
 import Editmodal from "./components/modal";
 
-import { Button, TextField, Box } from "@mui/material";
+import { Button, TextField, Box, Typography, Divider } from "@mui/material";
 import BasicTable from "./components/table";
+import { findByLabelText } from "@testing-library/react";
 
-const App = () => {
+interface TestData {
+  inputvalue?: any;
+}
+
+const App = (props: any) => {
+  const { inputval } = props;
   const [details, setDetails] = useState([{}]);
   const [inputvalue, setInputValue] = useState("");
   // const [responsedata, setResponseData] = useState("");
@@ -14,6 +20,12 @@ const App = () => {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [editId, setEditId] = useState<number>(0);
   const [passname, setPassName] = useState("");
+
+  // Testing UseStates
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [error, setError] = useState(false);
 
   const handleClickOpen = (id: any, name: any) => {
     setIsOpenModal(true);
@@ -65,15 +77,24 @@ const App = () => {
   return (
     <>
       {/* <BasicTable passdata={details} /> */}
+
+      {/* Todo list */}
+
       <Box
+        p={5}
+        m={9}
         sx={{
+          border: "1px solid grey",
+          borderRadius: "20px",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          mt: 10,
         }}
       >
+        <Typography variant="h5" align="center" mb={2} color="initial">
+          Todo List
+        </Typography>
         <Editmodal
           open={isOpenModal}
           onClose={() => setIsOpenModal(false)}
@@ -82,13 +103,18 @@ const App = () => {
         <Box>
           <TextField
             id="standard-basic"
-            label="Name"
+            // label="Name"
+            placeholder="Name"
             variant="standard"
             value={inputvalue}
             onChange={(e) => setInputValue(e.target.value)}
           />
 
-          <Button onClick={() => addData(inputvalue)} variant="contained">
+          <Button
+            disabled={!inputvalue}
+            onClick={() => addData(inputvalue)}
+            variant="contained"
+          >
             Add
           </Button>
         </Box>
@@ -117,6 +143,61 @@ const App = () => {
           ))}
         </ul>
       </Box>
+
+      {/* Todo List end */}
+
+      {/* Login */}
+
+      <Box
+        m={9}
+        p={5}
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+          border: "1px solid grey",
+          borderRadius: "20px",
+        }}
+      >
+        <Typography mb={2} variant="h5" color="initial">
+          Login
+        </Typography>
+        <TextField
+          id="demo-helper-text-aligned"
+          // label="Username"
+          placeholder="Username"
+          sx={{ marginBottom: "10px" }}
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <TextField
+          id="demo-helper-text-aligned"
+          type={"password"}
+          placeholder="Password"
+          sx={{ marginBottom: "10px" }}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+
+        <Button
+          data-testid="login-button"
+          disabled={!username || !password}
+          // {loading ? "please wait" : "Login"}
+          variant="contained"
+          color="primary"
+        >
+          Login
+        </Button>
+        <span
+          data-testid="error"
+          style={{ visibility: error ? "visible" : "hidden" }}
+        >
+          Something went wrong!
+        </span>
+      </Box>
+
+      {/* Login end */}
     </>
   );
 };
