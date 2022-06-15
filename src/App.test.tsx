@@ -24,10 +24,10 @@ test("Password should be empty", () => {
   const passwordInput =
     screen.getByPlaceholderText<HTMLInputElement>(/Password/i);
   expect(passwordInput.value).toBe("");
-  console.log(passwordInput.value);
+  // console.log(passwordInput.value);
 });
 
-test("Disable submit button", () => {
+test("Submit button should be disabled", () => {
   render(<App />);
   const LoginButton = screen.getByTestId("login-button");
   expect(LoginButton).toBeDisabled();
@@ -39,10 +39,10 @@ test("Login button should not be disabled when inputs exist", () => {
   const usernameInput = screen.getByPlaceholderText(/Username/i);
   const passwordInput = screen.getByPlaceholderText(/Password/i);
 
-  const testValue = "test";
+  const data = "martin";
 
-  fireEvent.change(usernameInput, { target: { value: testValue } });
-  fireEvent.change(passwordInput, { target: { value: testValue } });
+  fireEvent.change(usernameInput, { target: { value: data } });
+  fireEvent.change(passwordInput, { target: { value: data } });
 
   expect(LoginButton).not.toBeDisabled();
 });
